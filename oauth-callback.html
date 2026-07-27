@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Authorization received — MatchedMD</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#F7F5F0;color:#22262B;display:flex;
+    min-height:100vh;align-items:center;justify-content:center;padding:20px}
+  .card{background:#fff;border:1px solid #C9D2DC;border-radius:10px;max-width:560px;
+    padding:30px;box-shadow:0 10px 30px rgba(31,58,95,.08)}
+  h1{color:#1F3A5F;font-size:22px;margin:0 0 10px}
+  code{display:block;background:#F4F6F8;border:1px solid #C9D2DC;border-radius:6px;
+    padding:14px;font-size:15px;word-break:break-all;margin:14px 0}
+  button{background:#1F3A5F;color:#fff;border:none;border-radius:6px;padding:10px 18px;
+    font-size:15px;font-weight:700;cursor:pointer}
+  p{font-size:15px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Authorization code received</h1>
+  <p>Copy the code below and paste it back to Claude to finish connecting Pinterest.</p>
+  <code id="code">No code found in this URL.</code>
+  <button onclick="navigator.clipboard.writeText(document.getElementById('code').textContent)">Copy code</button>
+</div>
+<script>
+  const c = new URLSearchParams(location.search).get("code");
+  if (c) document.getElementById("code").textContent = c;
+</script>
+</body>
+</html>
