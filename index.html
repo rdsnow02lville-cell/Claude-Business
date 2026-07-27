@@ -91,6 +91,16 @@
   summary{font-weight:700;cursor:pointer;font-size:16.5px}
   details p{margin-top:8px;font-size:15px;color:var(--dim)}
 
+  .pvbtn{margin-top:12px;background:none;border:1.5px solid var(--navy);color:var(--navy);
+    padding:6px 14px;border-radius:6px;font-family:'Public Sans',sans-serif;font-weight:700;
+    font-size:13px;cursor:pointer}
+  .pvbtn:hover{background:var(--navy);color:#fff}
+  #lb{display:none;position:fixed;inset:0;background:rgba(28,37,48,.88);z-index:50;
+    align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+  #lb img{max-width:min(92vw,700px);max-height:92vh;border-radius:6px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  #lb .close{position:fixed;top:16px;right:22px;color:#fff;font-size:34px;
+    font-family:'Public Sans',sans-serif;line-height:1;cursor:pointer}
   footer{padding:36px 0 48px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
 </style>
 </head>
@@ -114,11 +124,11 @@
   <div class="wrap">
     <h2>What's inside</h2>
     <div class="docs">
-      <div class="doc"><div class="num">01</div><h3>New Patient Intake Packet</h3><p>Demographics, insurance, medical history, and consent to treatment in one clean packet.</p></div>
-      <div class="doc"><div class="num">02</div><h3>Financial Policy &amp; Payment Agreement</h3><p>Copays, self-pay, balances, collections, and forms fees — with signature acknowledgment.</p></div>
-      <div class="doc"><div class="num">03</div><h3>HIPAA Notice of Privacy Practices</h3><p>Patient rights, permitted uses of PHI, complaints process, and acknowledgment of receipt.</p></div>
-      <div class="doc"><div class="num">04</div><h3>Cancellation &amp; No-Show Policy</h3><p>Notice windows, fees, late arrivals, and repeat no-show handling you can enforce.</p></div>
-      <div class="doc"><div class="num">05</div><h3>Telehealth Informed Consent</h3><p>Benefits, risks, patient responsibilities, and billing for video and phone visits.</p></div>
+      <div class="doc"><div class="num">01</div><h3>New Patient Intake Packet</h3><p>Demographics, insurance, medical history, and consent to treatment in one clean packet.</p><button class="pvbtn" onclick="pv('pv-b1-1.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">02</div><h3>Financial Policy &amp; Payment Agreement</h3><p>Copays, self-pay, balances, collections, and forms fees — with signature acknowledgment.</p><button class="pvbtn" onclick="pv('pv-b1-2.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">03</div><h3>HIPAA Notice of Privacy Practices</h3><p>Patient rights, permitted uses of PHI, complaints process, and acknowledgment of receipt.</p><button class="pvbtn" onclick="pv('pv-b1-3.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">04</div><h3>Cancellation &amp; No-Show Policy</h3><p>Notice windows, fees, late arrivals, and repeat no-show handling you can enforce.</p><button class="pvbtn" onclick="pv('pv-b1-4.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">05</div><h3>Telehealth Informed Consent</h3><p>Benefits, risks, patient responsibilities, and billing for video and phone visits.</p><button class="pvbtn" onclick="pv('pv-b1-5.jpg')" type="button">Preview page 1</button></div>
     </div>
   </div>
 </section>
@@ -128,11 +138,11 @@
     <h2>New: the Employee Handbook &amp; HR Policy Pack</h2>
     <p style="max-width:680px;color:var(--dim);margin-bottom:22px">Hiring your first employee — or your fifth? Seven templates that put your practice's employment policies in writing before problems show up.</p>
     <div class="docs">
-      <div class="doc"><div class="num">01</div><h3>Employee Handbook</h3><p>At-will, EEO, anti-harassment, attendance, PTO, HIPAA workforce rules, conduct, and corrective action — with state-law decision points flagged.</p></div>
-      <div class="doc"><div class="num">02</div><h3>Job Description Pack</h3><p>Ready-to-post descriptions for Front Desk, Medical Assistant, and Office Manager roles.</p></div>
-      <div class="doc"><div class="num">03</div><h3>New Hire Onboarding Checklist</h3><p>Before day one through the 90-day review — I-9, training, HIPAA, and competency steps in order.</p></div>
-      <div class="doc"><div class="num">04</div><h3>Confidentiality &amp; HIPAA Workforce Agreement</h3><p>The signature-ready agreement every staff member should sign before touching PHI.</p></div>
-      <div class="doc"><div class="num">05</div><h3>Performance, Discipline &amp; PTO Forms</h3><p>Performance Review, Corrective Action, and Time Off Request forms that keep documentation consistent.</p></div>
+      <div class="doc"><div class="num">01</div><h3>Employee Handbook</h3><p>At-will, EEO, anti-harassment, attendance, PTO, HIPAA workforce rules, conduct, and corrective action — with state-law decision points flagged.</p><button class="pvbtn" onclick="pv('pv-b2-1.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">02</div><h3>Job Description Pack</h3><p>Ready-to-post descriptions for Front Desk, Medical Assistant, and Office Manager roles.</p><button class="pvbtn" onclick="pv('pv-b2-2.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">03</div><h3>New Hire Onboarding Checklist</h3><p>Before day one through the 90-day review — I-9, training, HIPAA, and competency steps in order.</p><button class="pvbtn" onclick="pv('pv-b2-3.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">04</div><h3>Confidentiality &amp; HIPAA Workforce Agreement</h3><p>The signature-ready agreement every staff member should sign before touching PHI.</p><button class="pvbtn" onclick="pv('pv-b2-4.jpg')" type="button">Preview page 1</button></div>
+      <div class="doc"><div class="num">05</div><h3>Performance, Discipline &amp; PTO Forms</h3><p>Performance Review, Corrective Action, and Time Off Request forms that keep documentation consistent.</p><button class="pvbtn" onclick="pv('pv-b2-5.jpg')" type="button">Preview page 1</button></div>
     </div>
   </div>
 </section>
@@ -200,7 +210,13 @@
   </div>
 </footer>
 
+<div id="lb" onclick="this.style.display='none'" role="dialog" aria-label="Document preview">
+  <span class="close">&times;</span>
+  <img id="lbimg" alt="Template preview, page 1 (watermarked)">
+</div>
 <script>
+  function pv(s){document.getElementById('lbimg').src=s;document.getElementById('lb').style.display='flex';}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lb').style.display='none';});
   const txt="Riverbend Family Medicine";const el=document.getElementById("tw");let i=0;
   const rm=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(rm){el.textContent=txt;el.classList.remove("typed")}
