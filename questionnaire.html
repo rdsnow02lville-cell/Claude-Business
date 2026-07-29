@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatchedMD — Physician Retention Questionnaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFAF7; --ink:#17242C; --ink-soft:#43525C; --teal:#0F766E;
+    --teal-deep:#0B5A54; --hairline:#DCDED6; --card:#FFFFFF; --wash:#EFF2EC;
+    --sel:#0F766E; --serif:"STIX Two Text",Georgia,serif;
+    --sans:"Public Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .shell{max-width:720px;margin:0 auto;padding:0 20px 80px}
+
+  header{padding:28px 0 20px;border-bottom:1px solid var(--hairline);margin-bottom:8px}
+  .wordmark{font-family:var(--serif);font-weight:700;font-size:22px}
+  .wordmark span{color:var(--teal)}
+  .sub{color:var(--ink-soft);font-size:14.5px;margin-top:4px}
+
+  .progresswrap{position:sticky;top:0;background:var(--paper);padding:14px 0 10px;z-index:5;border-bottom:1px solid var(--hairline);margin-bottom:26px}
+  .bar{height:6px;background:var(--wash);border-radius:3px;overflow:hidden}
+  .bar>i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s ease}
+  .steplabel{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:8px;display:flex;justify-content:space-between}
+
+  .block{display:none;animation:fade .25s ease}
+  .block.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .blocktitle{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:4px}
+  .blockhint{color:var(--ink-soft);font-size:14.5px;margin-bottom:24px}
+
+  .q{margin-bottom:26px;padding-bottom:2px}
+  .q .qlabel{font-weight:600;font-size:16.5px;margin-bottom:12px;display:block}
+  .q .qid{font-family:var(--mono);font-size:12px;color:var(--teal-deep);margin-right:8px}
+
+  .opts{display:grid;gap:8px}
+  .opts.two{grid-template-columns:1fr 1fr}
+  @media(max-width:520px){.opts.two{grid-template-columns:1fr}}
+  .opt{border:1.5px solid #C9CCC2;border-radius:8px;padding:12px 14px;cursor:pointer;background:#fff;font-size:15px;transition:all .12s;user-select:none}
+  .opt:hover{border-color:var(--teal)}
+  .opt.sel{border-color:var(--sel);background:var(--wash);box-shadow:inset 0 0 0 1px var(--sel)}
+
+  .scale{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .scale button{width:42px;height:42px;border:1.5px solid #C9CCC2;background:#fff;border-radius:8px;font-family:var(--mono);font-size:15px;cursor:pointer;transition:all .12s}
+  .scale button:hover{border-color:var(--teal)}
+  .scale button.sel{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .scaleends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-soft);margin-top:6px;font-family:var(--mono)}
+
+  input[type=text]{width:100%;font-family:var(--sans);font-size:15px;padding:12px 13px;border:1.5px solid #C9CCC2;border-radius:8px;background:#fff}
+  input[type=text]:focus{outline:none;border-color:var(--teal)}
+
+  .consent{background:var(--card);border:1px solid var(--hairline);border-radius:10px;padding:20px;font-size:14.5px;color:var(--ink-soft);margin-bottom:22px}
+  .consent b{color:var(--ink)}
+
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:32px}
+  .btn{font-family:var(--sans);font-weight:600;font-size:15px;padding:12px 26px;border-radius:8px;border:none;cursor:pointer}
+  .btn-primary{background:var(--teal);color:#fff}
+  .btn-primary:hover{background:var(--teal-deep)}
+  .btn-primary:disabled{background:#9CB3AF;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--teal-deep);border:1.5px solid var(--teal)}
+  .btn-ghost:hover{background:var(--wash)}
+
+  /* admin / done */
+  .done{text-align:center;padding:40px 0}
+  .done h2{font-family:var(--serif);font-size:28px;margin-bottom:10px}
+  .scorecard{background:var(--card);border:1px solid var(--hairline);border-radius:10px;padding:22px;margin:24px 0;text-align:left}
+  .scorecard h3{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--teal-deep);margin-bottom:14px}
+  .scorerow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--wash);font-size:14.5px}
+  .scorerow b{font-family:var(--mono);font-weight:500}
+  .adminbar{margin-top:30px;padding-top:20px;border-top:1px dashed var(--hairline);font-size:13px;color:var(--ink-soft)}
+  .adminbar button{font-family:var(--mono);font-size:12.5px;background:var(--ink);color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;margin-right:8px;margin-top:8px}
+  .err{color:#9A3412;font-size:13.5px;margin-top:8px;min-height:18px}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="wordmark">Matched<span>MD</span></div>
+    <div class="sub">Confidential physician retention &amp; fit diagnostic</div>
+  </header>
+
+  <div class="progresswrap">
+    <div class="bar"><i id="pbar"></i></div>
+    <div class="steplabel"><span id="pstep">Consent</span><span id="pcount"></span></div>
+  </div>
+
+  <form id="survey" onsubmit="return false">
+    <!-- blocks injected by JS -->
+  </form>
+
+  <div class="nav" id="nav">
+    <button type="button" class="btn btn-ghost" id="back" onclick="prev()" style="visibility:hidden">Back</button>
+    <button type="button" class="btn btn-primary" id="next" onclick="next()">Begin</button>
+  </div>
+  <div class="err" id="err"></div>
+</div>
+
+<script>
+// ---------- instrument definition ----------
+const SCALE10 = {type:'scale', min:0, max:10, lo:'Not at all', hi:'Completely'};
+const GAP = ['Better','As expected','Worse',"Wasn't discussed"];
+
+const BLOCKS = [
+  {
+    id:'consent', title:'Before you begin', hint:'',
+    consent:true,
+    questions:[
+      {id:'C1', label:'Your NPI', type:'text', placeholder:'10-digit National Provider Identifier', validate:'npi', required:true},
+      {id:'C3', label:'Practice / group name', type:'text', placeholder:'e.g., Tennessee Orthopaedic Alliance', required:true},
+    ]
+  },
+  {
+    id:'anchor', title:'You & your household', hint:'A few questions about life outside the practice — the factors that most shape whether a move sticks.',
+    questions:[
+      {id:'A1', label:'Do you have a spouse or partner?', opts:['Yes','No'], branch:{'No':['A2','A3']}},
+      {id:'A2', label:"Is your spouse/partner employed in this area?", opts:['Employed locally, hard to relocate','Employed locally, portable career','Not employed','Remote / location-independent']},
+      {id:'A3', label:'During recruitment, did anyone assess your family\u2019s fit with this location?', opts:['Yes, thoroughly','Somewhat','Not at all']},
+      {id:'A4', label:'Do children, parents, or close family live within ~1 hour?', opts:['Yes, several','One or two','None']},
+      {id:'A5', label:'Do you have children in local schools?', opts:['Yes','No','Not applicable']},
+      {id:'A6', label:'Outside of work, how connected does your household feel to this community?', ...SCALE10, lo:'Not at all', hi:'Deeply rooted'},
+      {id:'A7', label:'Before moving here, what were your ties to this state?', opts:['Grew up here','Trained here','Lived here previously','No prior ties']},
+    ]
+  },
+  {
+    id:'gap', title:'Expectations vs. reality', hint:'Compared with what you were led to expect when you signed, how has each turned out?',
+    questions:[
+      {id:'B1', label:'Call burden / after-hours coverage', opts:GAP},
+      {id:'B2', label:'Patient volume / panel size', opts:GAP},
+      {id:'B3', label:'Case mix / complexity', opts:GAP},
+      {id:'B4', label:'Total compensation', opts:GAP},
+      {id:'B5', label:'Administrative & EHR burden', opts:GAP},
+      {id:'B6', label:'Support staff and resources', opts:GAP},
+      {id:'B7', label:'Autonomy over clinical decisions', opts:GAP},
+    ]
+  },
+  {
+    id:'comp', title:'Compensation trajectory', hint:'',
+    questions:[
+      {id:'D1', label:'Do you understand how your compensation changes after any guarantee period?', opts:['Clearly','Vaguely','Not at all','No guarantee period']},
+      {id:'D2', label:'Were you shown realistic production (e.g., wRVU) projections before signing?', opts:['Yes','No','Don\u2019t recall']},
+      {id:'D3', label:'Over the next 2 years, you expect your income to:', opts:['Rise','Hold steady','Fall','Very unsure']},
+    ]
+  },
+  {
+    id:'auto', title:'How you practice', hint:'',
+    questions:[
+      {id:'E1', label:'How much control do you have over your schedule, relative to what you want?', opts:['Far less','Somewhat less','About right','More than needed']},
+      {id:'E2', label:'Compared with your training environment, your current practice is:', opts:['More managed','About the same','More autonomous']},
+      {id:'E3', label:'How well does the practice\u2019s clinical style match how you want to practice?', ...SCALE10, lo:'Poor match', hi:'Perfect match'},
+    ]
+  },
+  {
+    id:'partner', title:'Partnership & advancement', hint:'',
+    questions:[
+      {id:'F1', label:'Is there a clear partnership or advancement track with a stated timeline?', opts:['Yes, clear','Exists but vague','None','Not applicable (employed)']},
+      {id:'F2', label:'If a track exists, how confident are you it will materialize as described?', ...SCALE10, lo:'Not confident', hi:'Very confident'},
+    ]
+  },
+  {
+    id:'belong', title:'Colleagues & belonging', hint:'',
+    questions:[
+      {id:'G1', label:'Do you have a mentor or close colleague within the group?', opts:['Yes, several','One','None']},
+      {id:'G2', label:'How socially integrated do you feel with your partners/colleagues?', ...SCALE10, lo:'Not at all', hi:'Fully'},
+      {id:'G3', label:'Did you train (residency/fellowship) with anyone currently in your group?', opts:['Yes','No']},
+    ]
+  },
+  {
+    id:'exit', title:'Looking ahead', hint:'Last three — honest answers here are the most valuable of all.',
+    questions:[
+      {id:'H1', label:'In the past 3 months, have you updated your CV for a job search?', opts:['Yes','No']},
+      {id:'H2', label:'In the past 3 months, have you taken a recruiter call or looked at postings?', opts:['Never','Once','A few times','Regularly']},
+      {id:'H3', label:'How likely are you to still be at this practice in 2 years?', ...SCALE10, lo:'Very unlikely', hi:'Certain to stay'},
+    ]
+  },
+];
+
+// ---------- state ----------
+const answers = {};
+let bi = 0; // block index
+
+const form = document.getElementById('survey');
+
+function renderBlock(b){
+  let html = `<div class="block active" data-block="${b.id}">`;
+  if(!b.consent){
+    html += `<div class="blocktitle">${b.title}</div>`;
+    if(b.hint) html += `<div class="blockhint">${b.hint}</div>`;
+  } else {
+    html += `<div class="blocktitle">${b.title}</div>`;
+    html += `<div class="consent"><b>This is a confidential retention &amp; wellbeing diagnostic.</b> Your individual answers are never shared with your employer and are <b>not used for any employment decision</b>. Responses are aggregated to improve physician\u2013practice fit. Your NPI is used only to link this survey to career data and is stored separately from your answers. By continuing you consent to participate.</div>`;
+  }
+  b.questions.forEach(q=>{
+    html += `<div class="q" data-qwrap="${q.id}">`;
+    html += `<label class="qlabel"><span class="qid">${q.id}</span>${q.label}</label>`;
+    if(q.type==='text'){
+      html += `<input type="text" data-q="${q.id}" placeholder="${q.placeholder||''}" value="${answers[q.id]||''}" oninput="setText('${q.id}',this.value)">`;
+    } else if(q.type==='scale'){
+      html += `<div class="scale" data-q="${q.id}">`;
+      for(let n=q.min;n<=q.max;n++){
+        const s = answers[q.id]===n?' sel':'';
+        html += `<button type="button" class="sc${s}" onclick="setScale('${q.id}',${n},this)">${n}</button>`;
+      }
+      html += `</div><div class="scaleends"><span>${q.lo}</span><span>${q.hi}</span></div>`;
+    } else {
+      const two = q.opts.length===2?' two':'';
+      html += `<div class="opts${two}" data-q="${q.id}">`;
+      q.opts.forEach(o=>{
+        const s = answers[q.id]===o?' sel':'';
+        html += `<div class="opt${s}" onclick="setOpt('${q.id}','${o.replace(/'/g,"\\'")}',this)">${o}</div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  form.innerHTML = html;
+  applyBranch(b);
+  updateProgress();
+}
+
+function setOpt(id,val,el){
+  answers[id]=val;
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  const b = BLOCKS[bi];
+  if(b.questions.find(q=>q.id===id)?.branch) applyBranch(b);
+  clearErr();
+}
+function setScale(id,val,el){
+  answers[id]=val;
+  el.parentElement.querySelectorAll('button').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  clearErr();
+}
+function setText(id,val){ answers[id]=val.trim(); clearErr(); }
+
+// branching: hide dependent questions when a branch condition is met
+function applyBranch(b){
+  b.questions.forEach(q=>{
+    if(q.branch){
+      Object.entries(q.branch).forEach(([whenVal,hideIds])=>{
+        const hide = answers[q.id]===whenVal;
+        hideIds.forEach(hid=>{
+          const el = form.querySelector(`[data-qwrap="${hid}"]`);
+          if(el){ el.style.display = hide?'none':''; if(hide) delete answers[hid]; }
+        });
+      });
+    }
+  });
+}
+
+function currentRequiredMissing(){
+  const b = BLOCKS[bi];
+  for(const q of b.questions){
+    const wrap = form.querySelector(`[data-qwrap="${q.id}"]`);
+    if(wrap && wrap.style.display==='none') continue; // branched away
+    const val = answers[q.id];
+    if(q.validate==='npi'){
+      if(!/^\d{10}$/.test(val||'')) return {id:q.id, msg:'Please enter a valid 10-digit NPI.'};
+    }
+    if(q.required && (val===undefined||val==='')) return {id:q.id, msg:'This field is required.'};
+    // for non-consent blocks, every visible question is required
+    if(!b.consent && (val===undefined||val==='')) return {id:q.id, msg:'Please answer every question before continuing.'};
+  }
+  return null;
+}
+
+function next(){
+  const miss = currentRequiredMissing();
+  if(miss){ showErr(miss.msg); return; }
+  if(bi < BLOCKS.length-1){ bi++; renderBlock(BLOCKS[bi]); window.scrollTo({top:0,behavior:'smooth'}); }
+  else { finish(); }
+  syncNav();
+}
+function prev(){ if(bi>0){ bi--; renderBlock(BLOCKS[bi]); window.scrollTo({top:0,behavior:'smooth'}); syncNav(); } }
+
+function syncNav(){
+  document.getElementById('back').style.visibility = bi>0 ? 'visible':'hidden';
+  document.getElementById('next').textContent = bi===0 ? 'Begin' : (bi===BLOCKS.length-1 ? 'Submit' : 'Continue');
+}
+function updateProgress(){
+  const pct = Math.round((bi/(BLOCKS.length-1))*100);
+  document.getElementById('pbar').style.width = pct+'%';
+  document.getElementById('pstep').textContent = BLOCKS[bi].consent ? 'Consent' : BLOCKS[bi].title;
+  document.getElementById('pcount').textContent = `${bi} / ${BLOCKS.length-1}`;
+}
+function showErr(m){ document.getElementById('err').textContent = m; }
+function clearErr(){ document.getElementById('err').textContent=''; }
+
+// ---------- scoring ----------
+function score(){
+  const A={}, code=(id,map)=>map[answers[id]] ?? null;
+  // anchor_score (0-1)
+  const a2 = code('A2',{'Employed locally, hard to relocate':1,'Not employed':0.7,'Employed locally, portable career':0.5,'Remote / location-independent':0.6});
+  const a4 = code('A4',{'Yes, several':1,'One or two':0.5,'None':0});
+  const a7 = code('A7',{'Grew up here':1,'Trained here':0.7,'Lived here previously':0.5,'No prior ties':0});
+  const a6 = (answers['A6']??5)/10;
+  const anchorParts=[a6,a2,a4,a7].filter(x=>x!=null);
+  A.anchor_score = +(anchorParts.reduce((s,x)=>s+x,0)/anchorParts.length).toFixed(2);
+  // expectation gap
+  const B=['B1','B2','B3','B4','B5','B6','B7'];
+  A.expectation_gap_score = B.filter(id=>answers[id]==='Worse').length;
+  A.not_discussed_count = B.filter(id=>answers[id]==="Wasn't discussed").length;
+  // comp clarity (0-1)
+  const d1 = code('D1',{'Clearly':1,'Vaguely':0.5,'Not at all':0,'No guarantee period':0.75});
+  const d2 = code('D2',{'Yes':1,'No':0,'Don\u2019t recall':0.3});
+  A.comp_clarity = +(((d1??0.5)+(d2??0.5))/2).toFixed(2);
+  A.autonomy_fit = (answers['E3']??5);
+  const f1 = code('F1',{'Yes, clear':1,'Exists but vague':0.4,'None':0,'Not applicable (employed)':0.5});
+  A.partnership_clarity = +(((f1??0.5)+((answers['F2']??5)/10))/2).toFixed(2);
+  const g1 = code('G1',{'Yes, several':1,'One':0.6,'None':0});
+  A.belonging_score = +(((g1??0.5)+((answers['G2']??5)/10))/2).toFixed(2);
+  // exit intent (0-1, higher = more likely to leave)
+  const h1 = answers['H1']==='Yes'?1:0;
+  const h2 = code('H2',{'Never':0,'Once':0.4,'A few times':0.7,'Regularly':1});
+  const h3 = 1-((answers['H3']??5)/10);
+  A.exit_intent = +(((h1+ (h2??0) + h3)/3)).toFixed(2);
+  return A;
+}
+
+// ---------- persistence ----------
+const STORE='mmd_responses_v1';
+function saveResponse(){
+  const rec = {ts:new Date().toISOString(), ...answers, ...score()};
+  let all=[]; try{all=JSON.parse(sessionStorage.getItem(STORE)||'[]')}catch(e){}
+  all.push(rec); sessionStorage.setItem(STORE, JSON.stringify(all));
+  return rec;
+}
+
+function finish(){
+  const rec = saveResponse();
+  const s = score();
+  const rows = [
+    ['Anchoring score','anchor_score','0\u20131, higher = more rooted'],
+    ['Expectation-gap count','expectation_gap_score','0\u20137 \u201Cworse than promised\u201D'],
+    ['Undiscussed at signing','not_discussed_count','0\u20137 topics never covered'],
+    ['Compensation clarity','comp_clarity','0\u20131'],
+    ['Autonomy fit','autonomy_fit','0\u201310'],
+    ['Partnership clarity','partnership_clarity','0\u20131'],
+    ['Belonging score','belonging_score','0\u20131'],
+    ['Exit-intent index','exit_intent','0\u20131, higher = higher risk'],
+  ];
+  let html = `<div class="done"><h2>Thank you.</h2><p style="color:var(--ink-soft)">Your responses are recorded. Below is your confidential fit summary \u2014 these eight indices feed the retention model.</p>`;
+  html += `<div class="scorecard"><h3>Derived fit indices</h3>`;
+  rows.forEach(([label,key,note])=>{
+    html += `<div class="scorerow"><span>${label}<br><span style="font-size:12px;color:var(--ink-soft)">${note}</span></span><b>${s[key]}</b></div>`;
+  });
+  html += `</div>`;
+  html += `</div>`;
+  form.innerHTML = html;
+  document.getElementById('nav').style.display='none';
+  document.querySelector('.progresswrap').style.display='none';
+  clearErr();
+}
+
+// ---------- CSV export (schema-aligned to pipeline) ----------
+function exportCSV(){
+  let all=[]; try{all=JSON.parse(sessionStorage.getItem(STORE)||'[]')}catch(e){}
+  if(!all.length){ alert('No responses stored yet in this session.'); return; }
+  const cols = ['ts','C1','C3',
+    'A1','A2','A3','A4','A5','A6','A7',
+    'B1','B2','B3','B4','B5','B6','B7',
+    'D1','D2','D3','E1','E2','E3','F1','F2','G1','G2','G3','H1','H2','H3',
+    'anchor_score','expectation_gap_score','not_discussed_count','comp_clarity',
+    'autonomy_fit','partnership_clarity','belonging_score','exit_intent'];
+  const esc=v=>{ if(v==null)return''; const s=String(v); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; };
+  const header = cols.map(c=> c==='C1'?'npi':c).join(',');
+  const lines = all.map(r=>cols.map(c=>esc(r[c])).join(','));
+  const csv=[header,...lines].join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='matchedmd_responses.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+function showCount(){
+  let all=[]; try{all=JSON.parse(sessionStorage.getItem(STORE)||'[]')}catch(e){}
+  document.getElementById('cnt').textContent = ` ${all.length} response(s) in this session`;
+}
+
+// ---------- init ----------
+renderBlock(BLOCKS[0]); syncNav();
+</script>
+</body>
+</html>
